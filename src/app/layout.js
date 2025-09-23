@@ -30,16 +30,16 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             {/* <Header> */}
+            <ScrollToTop />
             <Header />
             <main className="min-h-screen">{children}</main>
             {/* footer */}
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
-                <p>Made with love by Vishal</p>
+                <p>Made by Vishal</p>
               </div>
             </footer>
           </ThemeProvider>
-          <ScrollToTop />
         </body>
       </html>
     </ClerkProvider>
