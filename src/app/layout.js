@@ -6,6 +6,7 @@ import Header from "@/components/module/navbar/Header";
 import { dark } from "@clerk/themes";
 
 import ScrollToTop from "./scroll-to-top";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
             <ScrollToTop />
             <Header />
             <main className="min-h-screen">{children}</main>
+            <Toaster />
             {/* footer */}
             <footer className="bg-muted/50 py-12">
               <div className="container mx-auto px-4 text-center text-gray-200">
