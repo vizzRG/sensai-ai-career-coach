@@ -48,6 +48,9 @@ export async function getIndustryInsights() {
     where: {
       clerkUserId: userId,
     },
+    include: {
+      industryInsight: true,
+    },
   });
 
   if (!user) throw new Error("User not found!!!");
