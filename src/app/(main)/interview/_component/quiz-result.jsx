@@ -24,18 +24,23 @@ const QuizResult = ({ result, hideStartNew = false, onStartNew }) => {
 
         {/* Improvement Tip */}
         {result.improvementTip && (
-          <div className="bg-muted p-4 rounded-lg">
+          <div className="bg-muted p-4 rounded-lg mt-4">
             <p className="font-medium">Improvement Tip:</p>
             <p className="text-muted-foreground">{result.improvementTip}</p>
           </div>
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-4 mt-4">
           <h3 className="font-medium">Question Review</h3>
           {result.questions.map((q, index) => (
-            <div className="border rounded-lg p-4 space-y-2" key={index}>
+            <div
+              className="border border-gray-400 rounded-lg p-4 space-y-4"
+              key={index}
+            >
               <div className="flex items-start justify-between gap-2">
-                <p className="font-medium">{q.question}</p>
+                <p className="font-medium text-white">
+                  {index + 1}. {q.questions}
+                </p>
                 {q.isCorrect ? (
                   <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
                 ) : (
@@ -58,7 +63,7 @@ const QuizResult = ({ result, hideStartNew = false, onStartNew }) => {
       </CardContent>
 
       {!hideStartNew && (
-        <CardFooter>
+        <CardFooter className={"mt-4"}>
           <Button onClick={onStartNew} className="w-full">
             Start New Quiz
           </Button>
