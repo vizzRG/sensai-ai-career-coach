@@ -29,7 +29,6 @@ const PerformanceChart = ({ assessments }) => {
       setChartData(formattedData);
     }
   }, [assessments]);
-  console.log(chartData);
   return (
     <div>
       <Card>

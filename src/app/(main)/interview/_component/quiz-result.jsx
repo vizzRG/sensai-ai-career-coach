@@ -6,7 +6,6 @@ import React from "react";
 
 const QuizResult = ({ result, hideStartNew = false, onStartNew }) => {
   if (!result) return null;
-  console.log(result.questions);
 
   return (
     <div className="mx-auto ">

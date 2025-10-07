@@ -25,7 +25,6 @@ export async function updateUser(data) {
             industry: data.industry,
           },
         });
-        console.log("This is updateuser log", industryInsight);
 
         // if industry doesn't exists, create it with default value -- will replace it with ai later
         if (!industryInsight) {
@@ -51,7 +50,7 @@ export async function updateUser(data) {
             skills: data.skills,
           },
         });
-        console.log("updated user", data.industry);
+
         return { updatedUser, industryInsight };
       },
       {
