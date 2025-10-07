@@ -62,9 +62,9 @@ const EntryForm = ({ type, entries, onChange }) => {
       endDate: data.current ? "" : formatDisplayDate(data.endDate),
     };
     onChange([...entries, formattedEntry]);
+    console.log(entries);
     reset();
     setIsAdding(false);
-    console.log(entries);
   });
   const handleDelete = (index) => {
     const newEntries = entries.filter((_, i) => i !== index);
@@ -97,7 +97,7 @@ const EntryForm = ({ type, entries, onChange }) => {
   return (
     <div className="space-y-4">
       <div className="space-x-4">
-        {entries.map((item, index) => {
+        {entries.map((item, index) => (
           <Card key={index}>
             <CardHeader
               className={
@@ -127,8 +127,8 @@ const EntryForm = ({ type, entries, onChange }) => {
                 {item.description}
               </p>
             </CardContent>
-          </Card>;
-        })}
+          </Card>
+        ))}
       </div>
       {isAdding && (
         <Card>
