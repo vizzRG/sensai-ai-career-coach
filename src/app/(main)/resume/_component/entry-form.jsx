@@ -62,7 +62,6 @@ const EntryForm = ({ type, entries, onChange }) => {
       endDate: data.current ? "" : formatDisplayDate(data.endDate),
     };
     onChange([...entries, formattedEntry]);
-    console.log(entries);
     reset();
     setIsAdding(false);
   });
