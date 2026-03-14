@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -40,7 +39,6 @@ export default function CoverLetterGenerator() {
     data: generatedLetter,
   } = useFetch(generateCoverLetter);
 
-  // Update content when letter is generated
   useEffect(() => {
     if (generatedLetter) {
       toast.success("Cover letter generated successfully!");
@@ -58,25 +56,30 @@ export default function CoverLetterGenerator() {
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
+    <div className="space-y-6 m-5">
+      <Card className="border border-white/10 bg-white/[0.02] backdrop-blur-md">
         <CardHeader>
-          <CardTitle>Job Details</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-white text-xl">Job Details</CardTitle>
+          <CardDescription className="text-white/50">
             Provide information about the position you're applying for
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Form fields remain the same */}
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
+                <Label htmlFor="companyName" className="text-white/80">
+                  Company Name
+                </Label>
+
                 <Input
                   id="companyName"
                   placeholder="Enter company name"
                   {...register("companyName")}
+                  className="bg-black/40 border-white/10"
                 />
+
                 {errors.companyName && (
                   <p className="text-sm text-red-500">
                     {errors.companyName.message}
@@ -85,12 +88,17 @@ export default function CoverLetterGenerator() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="jobTitle">Job Title</Label>
+                <Label htmlFor="jobTitle" className="text-white/80">
+                  Job Title
+                </Label>
+
                 <Input
                   id="jobTitle"
                   placeholder="Enter job title"
                   {...register("jobTitle")}
+                  className="bg-black/40 border-white/10"
                 />
+
                 {errors.jobTitle && (
                   <p className="text-sm text-red-500">
                     {errors.jobTitle.message}
@@ -100,13 +108,17 @@ export default function CoverLetterGenerator() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="jobDescription">Job Description</Label>
+              <Label htmlFor="jobDescription" className="text-white/80">
+                Job Description
+              </Label>
+
               <Textarea
                 id="jobDescription"
                 placeholder="Paste the job description here"
-                className="h-32"
+                className="h-32 bg-black/40 border-white/10"
                 {...register("jobDescription")}
               />
+
               {errors.jobDescription && (
                 <p className="text-sm text-red-500">
                   {errors.jobDescription.message}
@@ -115,7 +127,11 @@ export default function CoverLetterGenerator() {
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" disabled={generating}>
+              <Button
+                type="submit"
+                disabled={generating}
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+              >
                 {generating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

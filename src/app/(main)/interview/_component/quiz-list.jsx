@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,62 +25,71 @@ const QuizList = ({ assessments }) => {
 
   return (
     <>
-      <Card>
-        <CardHeader className={"flex flex-row items-center justify-between"}>
+      <Card className="border border-white/10 bg-white/[0.02] backdrop-blur-md">
+        <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle
-              className={
-                "bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 tracking-tight text-3xl md:text-4xl"
-              }
-            >
-              Recent Quizzes
+            <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80">
+                Recent
+              </span>{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
+                Quizzes
+              </span>
             </CardTitle>
-            <CardDescription>Review your past quiz performance</CardDescription>
+
+            <CardDescription className="text-white/40">
+              Review your past quiz performance
+            </CardDescription>
           </div>
-          <Button onClick={() => router.push("/interview/mock")}>
+
+          <Button
+            onClick={() => router.push("/interview/mock")}
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+          >
             Start New Quiz
           </Button>
         </CardHeader>
+
         <CardContent>
           <div className="space-y-4">
-            {assessments.map((assessment, i) => {
-              return (
-                <Card
-                  key={assessment.id}
-                  className={
-                    "cursor-pointer hover:bg-muted/50 transition-colors"
-                  }
-                  onClick={() => setSelectedQuiz(assessment)}
-                >
-                  <CardHeader>
-                    <CardTitle>Quiz {i + 1}</CardTitle>
-                    <CardDescription className={"flex justify-between w-full"}>
-                      <div>Score: {assessment.quizScore.toFixed(1)}%</div>
-                      <div>
-                        {format(
-                          new Date(assessment.createdAt),
-                          "MMMM dd, yyyy HH:mm"
-                        )}
-                      </div>
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {assessment.improvementTip}
-                    </p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {assessments.map((assessment, i) => (
+              <Card
+                key={assessment.id}
+                onClick={() => setSelectedQuiz(assessment)}
+                className="cursor-pointer border border-white/10 bg-white/[0.02] backdrop-blur-md hover:bg-white/[0.05] transition-all"
+              >
+                <CardHeader>
+                  <CardTitle className="text-white">Quiz {i + 1}</CardTitle>
+
+                  <CardDescription className="flex justify-between w-full text-white/40">
+                    <div>Score: {assessment.quizScore.toFixed(1)}%</div>
+
+                    <div>
+                      {format(
+                        new Date(assessment.createdAt),
+                        "MMMM dd, yyyy HH:mm",
+                      )}
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <p className="text-sm text-white/50">
+                    {assessment.improvementTip}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </CardContent>
       </Card>
 
       <Dialog open={!!selectedQuiz} onOpenChange={() => setSelectedQuiz(null)}>
-        <DialogContent className={" min-w-3xl max-h-[90vh] overflow-y-auto"}>
+        <DialogContent className="min-w-3xl max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border border-white/10">
           <DialogHeader>
-            <DialogTitle></DialogTitle>
+            <DialogTitle className="text-white">Quiz Result</DialogTitle>
           </DialogHeader>
+
           <QuizResult
             result={selectedQuiz}
             onStartNew={() => router.push("/interview/mock")}

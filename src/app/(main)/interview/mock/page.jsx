@@ -6,27 +6,39 @@ import Quiz from "../_component/quiz";
 
 const MockInterviewPage = () => {
   return (
-    <div className="container mx-auto space-y-4 py-6">
-      <div className="flex-col flex space-y-2 mx-2">
+    <div className="space-y-10">
+      {/* Header */}
+      <div className="flex flex-col space-y-4">
         <Link href={"/interview"}>
-          <Button variant={"link"} className={"gap-2 pl-0"}>
+          <Button
+            variant="ghost"
+            className="gap-2 w-fit text-white/70 hover:text-white hover:bg-white/5"
+          >
             <ArrowLeft className="h-4 w-4" />
             Back to Interview Preparation
           </Button>
         </Link>
 
         <div>
-          <h1 className="text-6xl  ">
-            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 tracking-tight">
-              Mock Interview
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80">
+              Mock
+            </span>{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
+              Interview
             </span>
           </h1>
-          <p className="text-muted-foreground">
-            Test your knowledge with industry-specific questions
+
+          <p className="text-white/40 mt-3">
+            Test your knowledge with industry-specific interview questions
           </p>
         </div>
       </div>
-      <Quiz />
+
+      {/* Quiz Container */}
+      <div className="rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md p-6 md:p-8">
+        <Quiz />
+      </div>
     </div>
   );
 };

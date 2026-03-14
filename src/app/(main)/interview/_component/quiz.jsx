@@ -85,7 +85,11 @@ const Quiz = () => {
   };
 
   if (generatingQuiz) {
-    return <BarLoader className="mt-4" width={"100%"} color="gray" />;
+    return (
+      <div className="mx-2">
+        <BarLoader width={"100%"} color="#6366f1" />
+      </div>
+    );
   }
 
   if (resultData) {
@@ -98,18 +102,30 @@ const Quiz = () => {
 
   if (!quizData) {
     return (
-      <Card className={"mx-2"}>
+      <Card className="mx-2 border border-white/10 bg-white/[0.02] backdrop-blur-md">
         <CardHeader>
-          <CardTitle>Ready to test your knowledge?</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80">
+              Ready to test
+            </span>{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
+              your knowledge?
+            </span>
+          </CardTitle>
         </CardHeader>
+
         <CardContent>
-          <p className="text-muted-foreground">
+          <p className="text-white/50">
             This quiz contains 10 questions specific to your industry and
             skills. Take your time and choose the best answer for each question.
           </p>
         </CardContent>
+
         <CardFooter>
-          <Button onClick={generateQuizFn} className={"w-full"}>
+          <Button
+            onClick={generateQuizFn}
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+          >
             Start Quiz
           </Button>
         </CardFooter>
@@ -118,44 +134,51 @@ const Quiz = () => {
   }
 
   const question = quizData[currentQuestion];
+
   return (
-    <Card className={"mx-2"}>
+    <Card className="mx-2 border border-white/10 bg-white/[0.02] backdrop-blur-md">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="text-white text-xl">
           Question {currentQuestion + 1} of {quizData.length}
         </CardTitle>
       </CardHeader>
-      <CardContent className={"space-y-4"}>
-        <p className="text-lg font-bold">{question.question}</p>
+
+      <CardContent className="space-y-6">
+        <p className="text-lg font-semibold text-white">{question.question}</p>
 
         <RadioGroup
-          className="space-y-2"
+          className="space-y-3"
           onValueChange={handleAnswer}
           value={answers[currentQuestion] ?? ""}
         >
-          {question.options.map((option, index) => {
-            return (
-              <div className="flex items-center space-x-2" key={index}>
-                <RadioGroupItem value={option} id={`option-${index}`} />
-                <Label htmlFor={`option-${index}`}>{option}</Label>
-              </div>
-            );
-          })}
+          {question.options.map((option, index) => (
+            <div
+              key={index}
+              className="flex items-center space-x-3 border border-white/10 rounded-lg p-3 hover:bg-white/[0.03] transition"
+            >
+              <RadioGroupItem value={option} id={`option-${index}`} />
+              <Label htmlFor={`option-${index}`} className="text-white/80">
+                {option}
+              </Label>
+            </div>
+          ))}
         </RadioGroup>
 
         {showExplanation && (
-          <div className="mt-4 p-4 bg-muted rounded-lg">
-            <p className="font-medium">Explanation:</p>
-            <p className="text-muted-foreground">{question.explanation}</p>
+          <div className="mt-4 p-4 bg-white/[0.03] border border-white/10 rounded-lg">
+            <p className="font-medium text-white">Explanation:</p>
+            <p className="text-white/50 text-sm mt-1">{question.explanation}</p>
           </div>
         )}
       </CardContent>
-      <CardFooter>
+
+      <CardFooter className="flex gap-3">
         {!showExplanation && (
           <Button
-            variant={"outline"}
+            variant="outline"
             onClick={() => setShowExplanation(true)}
             disabled={!answers[currentQuestion]}
+            className="border-white/20 text-white hover:bg-white/10"
           >
             Show Explanation
           </Button>
@@ -163,10 +186,11 @@ const Quiz = () => {
 
         <Button
           onClick={handleNext}
-          className={"ml-auto"}
+          className="ml-auto bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
           disabled={!answers[currentQuestion] || savingResult}
         >
           {savingResult && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+
           {currentQuestion < quizData.length - 1
             ? "Next Question"
             : "Finish Quiz"}

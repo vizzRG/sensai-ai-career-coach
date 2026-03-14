@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { Eye, Trash2 } from "lucide-react";
@@ -24,10 +23,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { deleteCoverLetter } from "@/actions/cover-letter";
-
 export default function CoverLetterList({ coverLetters }) {
   const router = useRouter();
-
   const handleDelete = async (id) => {
     try {
       await deleteCoverLetter(id);
@@ -37,78 +34,117 @@ export default function CoverLetterList({ coverLetters }) {
       toast.error(error.message || "Failed to delete cover letter");
     }
   };
-
   if (!coverLetters?.length) {
     return (
-      <Card>
+      <Card className="border border-white/10 bg-white/[0.02] backdrop-blur-md">
+        {" "}
         <CardHeader>
-          <CardTitle>No Cover Letters Yet</CardTitle>
-          <CardDescription>
-            Create your first cover letter to get started
-          </CardDescription>
-        </CardHeader>
+          {" "}
+          <CardTitle className="text-white text-xl">
+            {" "}
+            No Cover Letters Yet{" "}
+          </CardTitle>{" "}
+          <CardDescription className="text-white/50">
+            {" "}
+            Create your first cover letter to get started{" "}
+          </CardDescription>{" "}
+        </CardHeader>{" "}
       </Card>
     );
   }
-
   return (
     <div className="space-y-4">
+      {" "}
       {coverLetters.map((letter) => (
-        <Card key={letter.id} className="group relative ">
+        <Card
+          key={letter.id}
+          className="group relative border border-white/10 bg-white/[0.02] backdrop-blur-md hover:border-white/20 transition-all duration-300"
+        >
+          {" "}
           <CardHeader>
+            {" "}
             <div className="flex items-start justify-between">
+              {" "}
               <div>
-                <CardTitle className="text-xl gradient-title">
-                  {letter.jobTitle} at {letter.companyName}
-                </CardTitle>
-                <CardDescription>
-                  Created {format(new Date(letter.createdAt), "PPP")}
-                </CardDescription>
-              </div>
+                {" "}
+                <CardTitle className="text-lg md:text-xl font-semibold">
+                  {" "}
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80">
+                    {" "}
+                    {letter.jobTitle}{" "}
+                  </span>{" "}
+                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+                    {" "}
+                    at {letter.companyName}{" "}
+                  </span>{" "}
+                </CardTitle>{" "}
+                <CardDescription className="text-white/40">
+                  {" "}
+                  Created {format(new Date(letter.createdAt), "PPP")}{" "}
+                </CardDescription>{" "}
+              </div>{" "}
               <div className="flex space-x-2">
+                {/* VIEW BUTTON */}
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}
+                  className="border-white/10 bg-black/40 hover:bg-white/10"
+                >
+                  <Eye className="h-4 w-4 text-white/80" />
+                </Button>
+
+                {/* DELETE DIALOG */}
                 <AlertDialog>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" size="icon">
-                      <Trash2 className="h-4 w-4" />
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="border-white/10 bg-black/40 hover:bg-red-500/20"
+                    >
+                      <Trash2 className="h-4 w-4 text-white/80" />
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+
+                  <AlertDialogContent className="bg-[#0a0a0a] border-white/10">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Delete Cover Letter?</AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogTitle className="text-white">
+                        Delete Cover Letter?
+                      </AlertDialogTitle>
+
+                      <AlertDialogDescription className="text-white/50">
                         This action cannot be undone. This will permanently
                         delete your cover letter for {letter.jobTitle} at{" "}
                         {letter.companyName}.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
+
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel className="border-white/10 bg-black/40">
+                        Cancel
+                      </AlertDialogCancel>
+
                       <AlertDialogAction
                         onClick={() => handleDelete(letter.id)}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-gradient-to-r from-red-500 to-pink-500 text-white"
                       >
                         Delete
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-              </div>
-            </div>
-          </CardHeader>
+              </div>{" "}
+            </div>{" "}
+          </CardHeader>{" "}
           <CardContent>
-            <div className="text-muted-foreground text-sm line-clamp-3">
-              {letter.jobDescription}
-            </div>
-          </CardContent>
+            {" "}
+            <div className="text-white/50 text-sm line-clamp-3">
+              {" "}
+              {letter.jobDescription}{" "}
+            </div>{" "}
+          </CardContent>{" "}
         </Card>
-      ))}
+      ))}{" "}
     </div>
   );
 }

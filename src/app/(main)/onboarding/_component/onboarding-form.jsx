@@ -29,37 +29,26 @@ import { toast } from "sonner";
 const OnboardingForm = ({ industries }) => {
   const [selectedIndustry, setSelectedIndustry] = useState(null);
   const router = useRouter();
-
   const {
     loading: updateLoading,
     fn: updateUserFn,
     data: updateResult,
   } = useFetch(updateUser);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm({
-    resolver: zodResolver(onboardingSchema),
-  });
+  } = useForm({ resolver: zodResolver(onboardingSchema) });
   const onSubmit = async (values) => {
     try {
-      const formattedIndustry = `${values.industry}-${values.subIndustry
-        .toLowerCase()
-        .replace(/ /g, "-")}`;
-
-      await updateUserFn({
-        ...values,
-        industry: formattedIndustry,
-      });
+      const formattedIndustry = `${values.industry}-${values.subIndustry.toLowerCase().replace(/ /g, "-")}`;
+      await updateUserFn({ ...values, industry: formattedIndustry });
     } catch (error) {
       console.error("Onboarding error:", error);
     }
   };
-
   useEffect(() => {
     if (updateResult?.success && !updateLoading) {
       toast.success("Profile completed successfully!");
@@ -67,83 +56,122 @@ const OnboardingForm = ({ industries }) => {
       router.refresh();
     }
   }, [updateResult, updateLoading]);
-
   const watchIndustry = watch("industry");
   return (
-    <div className="flex items-center justify-center bg-background">
-      <Card className="w-full max-w-lg mt-10 mx-2">
-        <CardHeader>
-          <CardTitle className="text-gradient-to-b from-white to-white/80 text-4xl">
-            Complete Your Profile
-          </CardTitle>
-          <CardDescription>
+    <div className="min-h-screen flex items-center justify-center bg-[#030303] px-4 py-16">
+      {" "}
+      <Card className="w-full max-w-xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-2xl">
+        {" "}
+        <CardHeader className="space-y-3">
+          {" "}
+          <CardTitle className="text-3xl md:text-4xl font-bold">
+            {" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80">
+              {" "}
+              Complete Your{" "}
+            </span>{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+              {" "}
+              Profile{" "}
+            </span>{" "}
+          </CardTitle>{" "}
+          <CardDescription className="text-white/50">
+            {" "}
             Select your industry to get personalized career insights and
-            recommendations
-          </CardDescription>
-        </CardHeader>
+            recommendations{" "}
+          </CardDescription>{" "}
+        </CardHeader>{" "}
         <CardContent>
+          {" "}
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-4">
-              <Label htmlFor="industry">Industry</Label>
+            {" "}
+            {/* Industry */}{" "}
+            <div className="space-y-2">
+              {" "}
+              <Label htmlFor="industry" className="text-white/80">
+                {" "}
+                Industry{" "}
+              </Label>{" "}
               <Select
                 onValueChange={(value) => {
                   setValue("industry", value);
                   setSelectedIndustry(
-                    industries.find((ind) => ind.id === value)
+                    industries.find((ind) => ind.id === value),
                   );
                   setValue("subIndustry", "");
                 }}
               >
-                <SelectTrigger id="industry" className="w-full">
-                  <SelectValue placeholder="Select an industry" />
-                </SelectTrigger>
-                <SelectContent>
-                  {industries.map((ind) => {
-                    return (
-                      <SelectItem value={ind.id} key={ind.id}>
-                        {ind.name}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
+                {" "}
+                <SelectTrigger
+                  id="industry"
+                  className="w-full bg-black/40 border-white/10"
+                >
+                  {" "}
+                  <SelectValue placeholder="Select an industry" />{" "}
+                </SelectTrigger>{" "}
+                <SelectContent className="bg-[#0a0a0a] border-white/10">
+                  {" "}
+                  {industries.map((ind) => (
+                    <SelectItem value={ind.id} key={ind.id}>
+                      {" "}
+                      {ind.name}{" "}
+                    </SelectItem>
+                  ))}{" "}
+                </SelectContent>{" "}
+              </Select>{" "}
               {errors.industry && (
                 <p className="text-sm text-red-500">
-                  {errors.industry.message}
+                  {" "}
+                  {errors.industry.message}{" "}
                 </p>
-              )}
-            </div>
-
+              )}{" "}
+            </div>{" "}
+            {/* Sub Industry */}{" "}
             {watchIndustry && (
-              <div className="space-y-4">
-                <Label htmlFor="subIndustry">Specialization</Label>
+              <div className="space-y-2">
+                {" "}
+                <Label htmlFor="subIndustry" className="text-white/80">
+                  {" "}
+                  Specialization{" "}
+                </Label>{" "}
                 <Select
                   onValueChange={(value) => {
                     setValue("subIndustry", value);
                   }}
                 >
-                  <SelectTrigger id="subIndustry" className="w-full">
-                    <SelectValue placeholder="Select an industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {selectedIndustry?.subIndustries.map((ind) => {
-                      return (
-                        <SelectItem value={ind} key={ind}>
-                          {ind}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+                  {" "}
+                  <SelectTrigger
+                    id="subIndustry"
+                    className="w-full bg-black/40 border-white/10"
+                  >
+                    {" "}
+                    <SelectValue placeholder="Select an industry" />{" "}
+                  </SelectTrigger>{" "}
+                  <SelectContent className="bg-[#0a0a0a] border-white/10">
+                    {" "}
+                    {selectedIndustry?.subIndustries.map((ind) => (
+                      <SelectItem value={ind} key={ind}>
+                        {" "}
+                        {ind}{" "}
+                      </SelectItem>
+                    ))}{" "}
+                  </SelectContent>{" "}
+                </Select>{" "}
                 {errors.subIndustry && (
                   <p className="text-sm text-red-500">
-                    {errors.subIndustry.message}
+                    {" "}
+                    {errors.subIndustry.message}{" "}
                   </p>
-                )}
+                )}{" "}
               </div>
-            )}
-            <div className="space-y-4">
-              <Label htmlFor="experience">Years of Experience</Label>
+            )}{" "}
+            {/* Experience */}{" "}
+            <div className="space-y-2">
+              {" "}
+              <Label htmlFor="experience" className="text-white/80">
+                {" "}
+                Years of Experience{" "}
+              </Label>{" "}
               <Input
                 id="experience"
                 type="number"
@@ -151,58 +179,74 @@ const OnboardingForm = ({ industries }) => {
                 max="50"
                 placeholder="Enter years of experience"
                 {...register("experience")}
-              />
-
+                className="bg-black/40 border-white/10"
+              />{" "}
               {errors.experience && (
                 <p className="text-sm text-red-500">
-                  {errors.experience.message}
+                  {" "}
+                  {errors.experience.message}{" "}
                 </p>
-              )}
-            </div>
-            <div className="space-y-4">
-              <Label htmlFor="skills">Skills</Label>
+              )}{" "}
+            </div>{" "}
+            {/* Skills */}{" "}
+            <div className="space-y-2">
+              {" "}
+              <Label htmlFor="skills" className="text-white/80">
+                {" "}
+                Skills{" "}
+              </Label>{" "}
               <Input
                 id="skills"
                 placeholder="e.g., Python, JavaScript, Project Management"
                 {...register("skills")}
-              />
-              <p className="text-sm text-muted-foreground">
-                Seperate multiple skills with commas
-              </p>
-
+                className="bg-black/40 border-white/10"
+              />{" "}
+              <p className="text-sm text-white/40">
+                {" "}
+                Seperate multiple skills with commas{" "}
+              </p>{" "}
               {errors.skills && (
                 <p className="text-sm text-red-500">{errors.skills.message}</p>
-              )}
-            </div>
-            <div className="space-y-4">
-              <Label htmlFor="bio">Professional Bio</Label>
+              )}{" "}
+            </div>{" "}
+            {/* Bio */}{" "}
+            <div className="space-y-2">
+              {" "}
+              <Label htmlFor="bio" className="text-white/80">
+                {" "}
+                Professional Bio{" "}
+              </Label>{" "}
               <Textarea
                 id="bio"
                 placeholder="Tell us about your professional background..."
-                className="h-32"
+                className="h-32 bg-black/40 border-white/10"
                 {...register("bio")}
-              />
-
+              />{" "}
               {errors.bio && (
                 <p className="text-sm text-red-500">{errors.bio.message}</p>
-              )}
-            </div>
-
-            <Button className="w-full" type="submit" disabled={updateLoading}>
+              )}{" "}
+            </div>{" "}
+            {/* Submit */}{" "}
+            <Button
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
+              type="submit"
+              disabled={updateLoading}
+            >
+              {" "}
               {updateLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
+                  {" "}
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                  Saving...{" "}
                 </>
               ) : (
                 "Complete Profile"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              )}{" "}
+            </Button>{" "}
+          </form>{" "}
+        </CardContent>{" "}
+      </Card>{" "}
     </div>
   );
 };
-
 export default OnboardingForm;

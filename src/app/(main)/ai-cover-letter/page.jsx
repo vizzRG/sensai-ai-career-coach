@@ -8,20 +8,17 @@ export default async function CoverLetterPage() {
   const coverLetters = await getCoverLetters();
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row gap-2 items-center justify-between mb-5">
-        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 tracking-tight">
-          My Cover Letters
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between m-4">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-white/80"></span>{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400"></span>
         </h1>
-        <Link href="/ai-cover-letter/new" className="mr-5">
-          <Button>
-            <Plus className="h-4 w-4" />
-            Create New
-          </Button>
-        </Link>
       </div>
 
-      <CoverLetterList coverLetters={coverLetters} />
+      <div className="rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md p-4 md:p-6">
+        <CoverLetterList coverLetters={coverLetters} />
+      </div>
     </div>
   );
 }
