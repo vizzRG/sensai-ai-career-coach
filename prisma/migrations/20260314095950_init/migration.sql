@@ -1,11 +1,11 @@
 -- CreateEnum
-CREATE TYPE "public"."DemandLevel" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
+CREATE TYPE "DemandLevel" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
 
 -- CreateEnum
-CREATE TYPE "public"."MarketOutlook" AS ENUM ('POSITIVE', 'NEUTRAL', 'NEGATIVE');
+CREATE TYPE "MarketOutlook" AS ENUM ('POSITIVE', 'NEUTRAL', 'NEGATIVE');
 
 -- CreateTable
-CREATE TABLE "public"."User" (
+CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "clerkUserId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE "public"."User" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Assessment" (
+CREATE TABLE "Assessment" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "quizScore" DOUBLE PRECISION NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE "public"."Assessment" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Resume" (
+CREATE TABLE "Resume" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
@@ -47,13 +47,14 @@ CREATE TABLE "public"."Resume" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."Coverletter" (
+CREATE TABLE "Coverletter" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "jobDescription" TEXT,
     "companyName" TEXT NOT NULL,
     "jobTitle" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'draft',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -61,14 +62,14 @@ CREATE TABLE "public"."Coverletter" (
 );
 
 -- CreateTable
-CREATE TABLE "public"."IndustryInsight" (
+CREATE TABLE "IndustryInsight" (
     "id" TEXT NOT NULL,
     "industry" TEXT NOT NULL,
     "salaryRanges" JSONB[],
     "growthRate" DOUBLE PRECISION NOT NULL,
-    "demandLevel" "public"."DemandLevel" NOT NULL,
+    "demandLevel" "DemandLevel" NOT NULL,
     "topSkills" TEXT[],
-    "marketOutlook" "public"."MarketOutlook" NOT NULL,
+    "marketOutlook" "MarketOutlook" NOT NULL,
     "keyTrends" TEXT[],
     "recommendedSkills" TEXT[],
     "lastUpdated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -78,34 +79,34 @@ CREATE TABLE "public"."IndustryInsight" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_clerkUserId_key" ON "public"."User"("clerkUserId");
+CREATE UNIQUE INDEX "User_clerkUserId_key" ON "User"("clerkUserId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE INDEX "Assessment_userId_idx" ON "public"."Assessment"("userId");
+CREATE INDEX "Assessment_userId_idx" ON "Assessment"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Resume_userId_key" ON "public"."Resume"("userId");
+CREATE UNIQUE INDEX "Resume_userId_key" ON "Resume"("userId");
 
 -- CreateIndex
-CREATE INDEX "Coverletter_userId_idx" ON "public"."Coverletter"("userId");
+CREATE INDEX "Coverletter_userId_idx" ON "Coverletter"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "IndustryInsight_industry_key" ON "public"."IndustryInsight"("industry");
+CREATE UNIQUE INDEX "IndustryInsight_industry_key" ON "IndustryInsight"("industry");
 
 -- CreateIndex
-CREATE INDEX "IndustryInsight_industry_idx" ON "public"."IndustryInsight"("industry");
+CREATE INDEX "IndustryInsight_industry_idx" ON "IndustryInsight"("industry");
 
 -- AddForeignKey
-ALTER TABLE "public"."User" ADD CONSTRAINT "User_industry_fkey" FOREIGN KEY ("industry") REFERENCES "public"."IndustryInsight"("industry") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_industry_fkey" FOREIGN KEY ("industry") REFERENCES "IndustryInsight"("industry") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Assessment" ADD CONSTRAINT "Assessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Assessment" ADD CONSTRAINT "Assessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Resume" ADD CONSTRAINT "Resume_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Resume" ADD CONSTRAINT "Resume_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "public"."Coverletter" ADD CONSTRAINT "Coverletter_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Coverletter" ADD CONSTRAINT "Coverletter_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
