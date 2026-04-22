@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useMemo } from "react";
 import { format } from "date-fns";
 import {
   Card,
@@ -20,17 +20,14 @@ import {
 } from "recharts";
 
 const PerformanceChart = ({ assessments }) => {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    if (assessments) {
-      const formattedData = assessments.map((assessment) => ({
+  const chartData = useMemo(
+    () =>
+      (assessments || []).map((assessment) => ({
         date: format(new Date(assessment.createdAt), "MM dd"),
         score: assessment.quizScore,
-      }));
-      setChartData(formattedData);
-    }
-  }, [assessments]);
+      })),
+    [assessments]
+  );
 
   return (
     <Card className="border border-white/10 bg-white/[0.02] backdrop-blur-md">
@@ -112,4 +109,4 @@ const PerformanceChart = ({ assessments }) => {
   );
 };
 
-export default PerformanceChart;
+export default memo(PerformanceChart);
