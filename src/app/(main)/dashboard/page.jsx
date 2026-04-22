@@ -1,7 +1,20 @@
 import { getIndustryInsights } from "@/actions/dashboard";
 import { getUserOnboardingStatus } from "@/actions/user";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
-import DashboardView from "./_components/dashboard-view";
+
+const DashboardView = dynamic(() => import("./_components/dashboard-view"), {
+  loading: () => (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div
+          key={index}
+          className="h-36 animate-pulse rounded-3xl border border-white/10 bg-white/[0.03]"
+        />
+      ))}
+    </div>
+  ),
+});
 
 const IndustryInsightsPage = async () => {
   const { isOnboarded } = await getUserOnboardingStatus();
@@ -11,25 +24,11 @@ const IndustryInsightsPage = async () => {
   const insights = await getIndustryInsights();
 
   return (
-    <div className="relative min-h-screen bg-[#030303]">
-      {/* Background gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-950/20 via-transparent to-purple-950/20 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent pointer-events-none" />
-
-      {/* Subtle grid pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
+    <div className="relative min-h-screen">
+      <div className="grid-background" />
 
       {/* Main content */}
-      <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 pb-16">
+      <div className="relative z-10 container mx-auto px-4 md:px-6 lg:px-8 pb-16 pt-8">
         <DashboardView insights={insights} />
       </div>
 
